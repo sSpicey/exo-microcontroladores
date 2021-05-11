@@ -1,6 +1,6 @@
 ###############################################################################
 #
-# IAR ELF Linker V9.10.1.308/W64 for ARM                  10/May/2021  20:54:44
+# IAR ELF Linker V9.10.1.308/W64 for ARM                  10/May/2021  21:29:48
 # Copyright 2007-2021 IAR Systems AB.
 #
 #    Output file  =
@@ -50,10 +50,10 @@ No sections matched the following patterns:
   .intvec   ro code          0x0   0x3c0  startup_TM4C1294.o [1]
                          - 0x3c0   0x3c0
 
-"P1":                              0x262
-  .text     ro code        0x3c0   0x260  calcumax.o [1]
-  .text     ro code        0x620     0x2  startup_TM4C1294.o [1]
-                         - 0x622   0x262
+"P1":                              0x2e2
+  .text     ro code        0x3c0   0x2e0  calcumax.o [1]
+  .text     ro code        0x6a0     0x2  startup_TM4C1294.o [1]
+                         - 0x6a2   0x2e2
 
 "P2":                             0x8000
   CSTACK             0x2000'0000  0x8000  <Block>
@@ -64,7 +64,7 @@ Unused ranges:
 
          From           To      Size
          ----           --      ----
-        0x622     0xf'ffff  0xf'f9de
+        0x6a2     0xf'ffff  0xf'f95e
   0x2000'8000  0x2003'ffff  0x3'8000
 
 
@@ -80,14 +80,14 @@ command line/config:
     Total:
 
 C:\Users\Beto\OneDrive\Área de Trabalho\gabi\Calcumax\Projects\uart2\Debug\Obj: [1]
-    calcumax.o              608
+    calcumax.o              736
     startup_TM4C1294.o      962
     ------------------------------------
-    Total:                1'570
+    Total:                1'698
 
     Linker created                32'768
 ----------------------------------------
-    Grand Total:          1'570   32'768
+    Grand Total:          1'698   32'768
 
 
 *******************************************************************************
@@ -108,7 +108,7 @@ __vector_table_0x1c          0x1c        Data  Gb  startup_TM4C1294.o [1]
 
 [1] = C:\Users\Beto\OneDrive\Área de Trabalho\gabi\Calcumax\Projects\uart2\Debug\Obj
 
-   1'570 bytes of readonly  code memory
+   1'698 bytes of readonly  code memory
   32'768 bytes of readwrite data memory
 
 Errors: none

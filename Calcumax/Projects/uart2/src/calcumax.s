@@ -98,12 +98,13 @@ main:
         ;R6: Identifies with which decimal part of the number we're dealing --;
         ;with (1, 2, 3 or 4) to multiply it by 10, 100 or 1000 to be soon ----;
         ;after added to form the operand -------------------------------------;
-        ;R7: Identifies which operation to be executed (1 for add, 2 for sub -;
-        ;, 3 for mult and 4 to divide)----------------------------------------;
+        ;R7: Identifies which operation to be executed (1 for mult, 2 for add ;
+        ;, 3 for sub and 4 to divide)----------------------------------------;
         MOV R5, #0x1 
         MOV R3, #0
+        MOV R4, #0
         MOV R6, #0x1
-        MOV R7, #0x0
+        MOV R7, #1
                      
 loop:
 wrx:    LDR R2, [R0, #UART_FR] ; UART STATUS
@@ -118,15 +119,16 @@ wtx:    LDR R2, [R0, #UART_FR] ; UART STATUS
         BEQ wtx ; If empty, go back 
         STR R1, [R0] ; Transmits to the UART TX the data supposed to be printed out
           
-        ;BL test_input
+        BL test_input
        
-        ;SUB R1, #0x30 ; Transforms the ASCII number in HEX
+        SUB R1, #0x30 ; Transforms the ASCII number in HEX
         
-        ;TST R5, #0x1 ; Tests if we are dealing with the first or second operand
-        ;IT EQ
-        ;  ADDEQ R3, R1
-       ; IT NE
-        ;  ADDNE R4, R1
+        TST R5, #0x1 ; Tests if we are dealing with the first or second operand
+
+        IT EQ
+          ADDEQ R3, R1
+        IT NE
+          ADDNE R4, R1
           
           
         B loop
@@ -134,10 +136,48 @@ wtx:    LDR R2, [R0, #UART_FR] ; UART STATUS
 
 ; SUB-ROUTINES
 test_input:
-        TST R1, #0x2A ; Multiplication ASCII symbol
-        IT EQ
-          ADDEQ R5, #1
+            BL handle_mult
+exit_hmul:  BL handle_add
+exit_hadd:  BL handle_sub
+exit_hsub:  BL handle_div
+exit_hdiv:
+            BX LR
+            
+handle_mult:
 
+        TST R1, #0x2A ; Multiplication ASCII symbol
+        IT NE
+          BLNE exit_hmul
+        ADD R5, #1
+        MOV R6, #1
+        MOV R7, #0x1
+        BX LR
+handle_add:
+
+        TST R1, #0x2B ; Addition ASCII symbol
+        IT NE
+          BLNE exit_hadd
+        ADD R5, #1
+        MOV R6, #1
+        MOV R7, #0x2
+        BX LR        
+handle_sub:
+
+        TST R1, #0x2D ; Subtraction ASCII symbol
+        IT NE
+          BLNE exit_hsub
+        ADD R5, #1
+        MOV R6, #1
+        MOV R7, #0x3
+        BX LR
+handle_div:
+
+        TST R1, #0x2F ; Division ASCII symbol
+        IT NE
+          BLNE exit_hdiv
+        ADD R5, #1
+        MOV R6, #1
+        MOV R7, #0x4
         BX LR
 ;----------
 ; UART_enable: Toggles clock for UART
